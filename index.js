@@ -3,17 +3,20 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import * as dotenv from "dotenv";
-import postsRoutes from './routes/posts.js';
+import postsRoutes from "./routes/posts.js";
 
 const app = express();
 
-app.use('/posts', postsRoutes);
+app.use(cors({
+  origin: ['http://localhost:3000']
+}));
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
 dotenv.config();
 mongoose.set("strictQuery", false);
+
+app.use("/posts", postsRoutes);
 
 mongoose
   .connect(process.env.MONGO_URL, {
