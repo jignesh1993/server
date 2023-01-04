@@ -11,6 +11,7 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const post = req.body;
+  console.log('post -->>', post);
   const newPost = new PostMessage(post);
   try {
     await newPost.save();
@@ -18,4 +19,10 @@ export const createPost = async (req, res) => {
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
+};
+
+export const updatePost = async (req, res) => {
+  const { id } = req.params;
+  console.log('id -->>', id);
+  res.json({msg : 'update post'})
 };
