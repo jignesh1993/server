@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import * as dotenv from "dotenv";
 import postsRoutes from "./routes/posts.js";
+import userRoutes from "./routes/users.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ dotenv.config();
 mongoose.set("strictQuery", false);
 
 app.use("/posts", postsRoutes);
+app.use("/users", userRoutes);
 
 mongoose
   .connect(process.env.MONGO_URL, {

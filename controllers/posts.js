@@ -47,12 +47,25 @@ export const deletePost = async (req, res) => {
 };
 
 export const likePost = async (req, res) => {
-  const { id: _id } = req.params; 
-  try { 
+  const { id: _id } = req.params;
+  try {
+    if (!req.userId) return res.json({ message: "Unauthenticated" });
+
     const post = await PostMessage.findById(_id);
-    const updatedPost = await PostMessage.findByIdAndUpdate(_id, {likeCount: post.likeCount + 1}, {
+    const index = post.likes.findIndex((id) => id === String(req.userId));
+
+    if (index === -1) {
+      // like post
+      post.likes.push(req.userId);
+    } else {
+      // dislike post
+      post.likes = post.likes.filter((id) => id !== String(req.userId));
+    }
+
+    const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
       new: true,
     });
+
     res.status(200).json(updatedPost);
   } catch (error) {
     console.log("error -->>", error);
