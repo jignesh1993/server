@@ -8,9 +8,11 @@ import userRoutes from "./routes/users.js";
 
 const app = express();
 
-app.use(cors({
-  origin: ['http://localhost:3000']
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+  })
+);
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
@@ -19,6 +21,10 @@ mongoose.set("strictQuery", false);
 
 app.use("/posts", postsRoutes);
 app.use("/users", userRoutes);
+
+app.get("/", (req, res) => {
+  res.send("API IS RUNNING");
+});
 
 mongoose
   .connect(process.env.MONGO_URL, {
